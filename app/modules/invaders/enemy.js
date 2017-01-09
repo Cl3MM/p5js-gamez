@@ -3,6 +3,7 @@ export class Enemy {
     this.p = p
     this.r = r * 2
     this.life = life || 1
+    this._life = this.life
     this.score = Math.floor(this.p.map(this.life, 1, 10, 10, 100))
     let color = Math.floor(this.p.map(this.life, 1, 10, 100, 0))
     this.color = [color, 100, 100]
@@ -11,6 +12,9 @@ export class Enemy {
     this.shape = Math.random() >= 0.5 ? this.skull() : this.invader()
   }
 
+  reset () {
+    this.life = this._life
+  }
   skull () {
     return [
       [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
@@ -55,7 +59,7 @@ export class Enemy {
   }
 
   hit (x, y, r) {
-    return this.p.dist(x, y, this.pos.x, this.pos.y) <= r + this.r
+    return this.p.dist(x, y, this.pos.x, this.pos.y) <= r + this.r / 2
   }
 
   update (lasers) {
@@ -76,6 +80,7 @@ export class Enemy {
   constrain () {
     if (this.pos.y >= this.p.windowHeight + this.r) {
       this.pos.y = -Math.floor(Math.random() * 100) + 20
+      this.pos.x = Math.floor(Math.random() * this.p.windowWidth) + this.r
     }
 
     if (this.pos.x > (this.p.windowWidth - this.r) || this.pos.x < this.r) {

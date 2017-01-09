@@ -1,28 +1,20 @@
-# Brunch + Babel/ES6 + Sass + Pug
+# Space Invaders mini-game
 
-This is a modern JS skeleton for [Brunch](http://brunch.io).
+## Start
 
-## Installation
+### Dev build
 
-Clone this repo
+    npm start
 
-## Getting started
+Then point your browser to http://localhost:3333 to start playing !
+### Production build
 
-* Install (if you don't have them):
-    * [Node.js](http://nodejs.org): `brew install node` on OS X
-    * [Brunch](http://brunch.io): `npm install -g brunch`
-    * Brunch plugins and app dependencies: `npm install`
-* Run:
-    * `brunch watch --server` — watches the project with continuous rebuild. This will also launch HTTP server with [pushState](https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history).
-    * `brunch build --production` — builds minified project for production
-* Learn:
-    * `public/` dir is fully auto-generated and served by HTTP server.  Write your code in `app/` dir.
-    * Place static files you want to be copied from `app/assets/` to `public/`.
-    * [Brunch site](http://brunch.io), [Getting started guide](https://github.com/brunch/brunch-guide#readme)
+    npm run prod
 
-## ES7
+Generate files in the `public` folder. Just open the `public/index.html` file in your browser to start playin'! 
 
-To use proposed JS features not included into ES6, do this:
+## Screenshots
 
-* `npm install --save-dev babel-preset-stage-0`
-* in `brunch-config.js`, add the preset: `presets: ['es2015', 'stage-0']`
+![full-life]("app/assets/images/full-life.png")
+![half-life]("app/assets/images/half-life.png")
+![menu]("app/assets/images/menu.png")

@@ -6,16 +6,22 @@ export class Hud {
     this.score = 0
     this.p = p
     this.kills = 0
+    this.lastKills = 0
     this.lives = ship.lives
     this.hearts = ship.lives
     this.revive = false
+    this.restart = false
     this.over = false
     return this
   }
 
   updateScore (enemy) {
+    this.lastKills = this.kills
     this.kills++
     this.score += enemy.score
+  }
+  restarted () {
+    return this.kills - this.lastKills < 0
   }
   renderContinue () {
     this.p.strokeWeight(4)
@@ -23,11 +29,14 @@ export class Hud {
     this.p.textAlign(this.p.CENTER, this.p.CENTER)
     this.p.text('GAME OVER', 0, 0, this.p.windowWidth, this.p.windowHeight)
     this.p.fill('rgba(255, 255, 255, 0.3)')
-    let btn = this.p.rect(this.p.windowWidth / 2 - 100, this.p.windowHeight / 2 + 100, 200, 80, 5)
+    let margin = (this.p.windowWidth - 420) / 2
+    let continueBtn = this.p.rect(margin, this.p.windowHeight / 2 + 100, 200, 80, 5)
+    let restartBtn = this.p.rect(margin + 220, this.p.windowHeight / 2 + 100, 200, 80, 5)
     this.p.strokeWeight(2)
     this.p.fill('rgb(244, 122, 55)')
     this.p.textSize(24)
-    this.p.text('CONTINUE?', this.p.windowWidth / 2 - 100, this.p.windowHeight / 2 + 100, 200, 80)
+    this.p.text('CONTINUE?', margin, this.p.windowHeight / 2 + 100, 200, 80)
+    this.p.text('RESTART?', margin + 220, this.p.windowHeight / 2 + 100, 200, 80)
     let r = this.p.windowWidth / 4
     let invader = new Enemy(
       this.p,
@@ -37,10 +46,15 @@ export class Hud {
     invader.shape = invader.invader()
     invader.color = 'rgb(244, 122, 55)'
     invader.show()
-    btn.mouseClicked = () => {
+
+    restartBtn.mouseClicked = () => {
       let x = this.p.mouseX
       let y = this.p.mouseY
-      if (x > this.p.windowWidth / 2 - 100 && x < this.p.windowWidth / 2 + 200
+      if (x > margin + 220 && x < this.p.windowWidth - margin
+        && this.p.windowHeight / 2 + 100 < y && y < this.p.windowHeight / 2 + 180) {
+        this.restart = true
+      }
+      if (x > margin && x < margin + 200
         && this.p.windowHeight / 2 + 100 < y && y < this.p.windowHeight / 2 + 180) {
         this.revive = true
       }
@@ -61,6 +75,14 @@ export class Hud {
       this.renderContinue(ship)
     }
     if (this.revive) {
+      this.revive = false
+      this.restart = false
+      ship.revive = true
+    }
+    if (this.restart) {
+      this.score = 0
+      this.kills = 0
+      this.restart = false
       this.revive = false
       ship.revive = true
     }

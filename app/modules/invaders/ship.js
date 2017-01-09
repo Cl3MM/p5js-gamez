@@ -4,6 +4,7 @@ export class Ship {
   constructor (opts) {
     this.p = opts.p
     this.lives = opts.lives || 5
+    this.maxLives = this.lives
     this.gravity = opts.gravity
     this.revive = false
     this.h = 25
@@ -71,6 +72,17 @@ export class Ship {
         this.lasers.splice(i, 1)
       }
     }
+  }
+
+  checkBonus (bonus) {
+    if (bonus.hit(this.pos.x, this.pos.y, this.h)) {
+      bonus.alive = false
+      this.lives++
+      if (bonus.type === 'life') {
+        this.lives += bonus.bonus().life
+      }
+    }
+    return bonus
   }
 
   checkEnemiesHit (enemies) {
